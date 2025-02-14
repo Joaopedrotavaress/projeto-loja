@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de CEP e Valor</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <h2>Consulta de CEP e Valor</h2>
+        <form onsubmit="event.preventDefault(); calcularDistancia();">
+            <input type="text" id="cep" placeholder="Digite seu CEP" maxlength="9" required>
+            <input type="text" id="numero" placeholder="Digite o número do endereço (opcional)">
+            <input type="text" id="valor" placeholder="Digite um valor em R$" required>
+            <button type="submit">Enviar</button>
+        </form>
+        <div id="resultado"></div> 
+    </div>
+
+  
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=chave&libraries=places"></script>
+    <script src="api.js"></script>
+</html>
