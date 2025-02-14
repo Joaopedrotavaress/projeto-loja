@@ -38,14 +38,17 @@ function calcularDistancia() {
         let melhorEndereco = "";
         let melhorFrete = 0;
         let menorDistancia = Infinity;
+        let resultados = "<h3>Distâncias das lojas:</h3>";
 
         response.rows.forEach((row, index) => {
             const element = row.elements[0];
             console.log(`Destino ${index + 1}:`, element);
 
             if (element.status === "OK") {
-                const tempo = element.duration.value;
+                const tempo = Math.round(element.duration.value / 60); // Convertendo segundos para minutos inteiros
                 const distancia = element.distance.value / 1000;
+                
+                resultados += `<p><strong>${destinos[index]}</strong> - ${distancia.toFixed(2)} km - ${tempo} min</p>`;
                 
                 if (tempo < menorTempo) {
                     menorTempo = tempo;
@@ -62,25 +65,20 @@ function calcularDistancia() {
 
         // Aplicação das regras de frete
         if (menorDistancia > 10) {
-            if (valorCompra >= 150) {
-                melhorFrete = 0; // Entrega grátis
-            } else {
-                melhorFrete = 10; // Entrega de R$10,00
-            }
+            melhorFrete = valorCompra >= 150 ? 0 : 10;
         } else {
-            if (valorCompra >= 100) {
-                melhorFrete = 0; // Entrega grátis
-            } else {
-                melhorFrete = 5; // Entrega de R$5,00
-            }
+            melhorFrete = valorCompra >= 100 ? 0 : 5;
         }
 
         console.log(`Melhor endereço: ${melhorEndereco}`);
         console.log(`Frete estimado: R$${melhorFrete.toFixed(2)}`);
 
-        document.getElementById("resultado").innerHTML =
-            `<p>Endereço mais rápido: <strong>${melhorEndereco}</strong></p>
-             <p>Distância: <strong>${menorDistancia.toFixed(2)} km</strong></p>
-             <p>Frete estimado: <strong>R$${melhorFrete.toFixed(2)}</strong></p>`;
+        resultados += `<h3>Melhor opção:</h3>
+            <p>Endereço mais rápido: <strong>${melhorEndereco}</strong></p>
+            <p>Distância: <strong>${menorDistancia.toFixed(2)} km</strong></p>
+            <p>Tempo estimado: <strong>${menorTempo} min</strong></p>
+            <p>Frete estimado: <strong>R$${melhorFrete.toFixed(2)}</strong></p>`;
+
+        document.getElementById("resultado").innerHTML = resultados;
     });
 }
